@@ -22,7 +22,8 @@ options:
   keyfile: privkey.pem
 schema:
   accountemail: str
-  domains: list(str)
+  domains:
+  - str
   dns: str
   dnsEnvVariables:
   - name: str
