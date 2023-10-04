@@ -9,7 +9,7 @@ if [ ! -f "${LE_CONFIG_HOME}/account.conf" ]; then
 fi
 
 ACCOUNT_EMAIL=$(bashio::config 'accountemail')
-DOMAIN=$(bashio::config 'domain')
+DOMAINS=$(bashio::config 'domains')
 DNS_PROTO=$(bashio::config 'dns')
 DNS_ENV_OPTIONS=$(jq -r '.dnsEnvVariables |map("export \(.name)=\(.value|tojson)")|.[]' $CONFIG_PATH)
 KEY_LENGTH=$(bashio::config 'keylength')
@@ -21,12 +21,13 @@ source <(echo ${DNS_ENV_OPTIONS});
 bashio::log.info "Registering account"
 acme.sh --register-account -m ${ACCOUNT_EMAIL}
 
-bashio::log.info "Issuing certificate for domain: ${DOMAIN}"
+bashio::log.info "Issuing certificate for domain: ${DOMAINS[*]}"
 
 function issue {
     # Issue the certificate exit corretly if is not time to renew
     local RENEW_SKIP=2
-    acme.sh --issue --domain ${DOMAIN} \
+    local DOMAIN_ARG=$(printf -- "--domain %s " "${DOMAINS[@]}")
+    acme.sh --issue ${DOMAIN_ARG} \
         --keylength ${KEY_LENGTH} \
         --dns ${DNS_PROTO} \
         || { ret=$?; [ $ret -eq ${RENEW_SKIP} ] && return 0 || return $ret ;}
@@ -34,13 +35,12 @@ function issue {
 
 issue
 
-bashio::log.info "Installing certificate to: /ssl/${DOMAIN}"
-keyArg=$( [[ ${KEY_LENGTH} == ec-* ]] && echo '--ecc' || echo '' )
-[ ! -d "/ssl/${DOMAIN}/" ] && mkdir -p "/ssl/${DOMAIN}/"
-acme.sh --install-cert --domain ${DOMAIN} \
-    ${keyArg} \
-    --key-file       "/ssl/${DOMAIN}/${KEY_FILE}" \
-    --fullchain-file "/ssl/${DOMAIN}/${FULLCHAIN_FILE}"
+bashio::log.info "Installing certificate to: /ssl"
+KEY_ARG=$( [[ ${KEY_LENGTH} == ec-* ]] && echo '--ecc' || echo '' )
+acme.sh --install-cert --domain ${DOMAINS[0]} \
+    ${KEY_ARG} \
+    --key-file       "/ssl/${KEY_FILE}" \
+    --fullchain-file "/ssl/${FULLCHAIN_FILE}"
 
 
 bashio::log.info "All ok, running cron to automatically renew certificate"

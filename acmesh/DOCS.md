@@ -14,7 +14,9 @@ Add-on configuration:
 
 ```yaml
 accountemail: mail@example.com
-domain: home.example.com
+domains:
+  - home.example.com
+  - '*.home.example.com'
 dns: dns_cf
 dnsEnvVariables:
   - name: CF_Token
@@ -23,7 +25,7 @@ dnsEnvVariables:
     value: xxxx
   - name: CF_Zone_ID
     value: xxxx
-keylength: ec-256
+keylength: 2048
 fullchainfile: fullchain.pem
 keyfile: privkey.pem
 ```
