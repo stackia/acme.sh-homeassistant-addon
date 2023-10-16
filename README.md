@@ -18,6 +18,7 @@ dnsEnvVariables:
     value: xxxx
   - name: CF_Zone_ID
     value: xxxx
+server: letsencrypt
 keylength: 2048
 fullchainfile: fullchain.pem
 keyfile: privkey.pem
