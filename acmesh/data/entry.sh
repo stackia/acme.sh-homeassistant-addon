@@ -15,6 +15,7 @@ DNS_ENV_OPTIONS=$(jq -r '.dnsEnvVariables |map("export \(.name)=\(.value|tojson)
 KEY_LENGTH=$(bashio::config 'keylength')
 FULLCHAIN_FILE=$(bashio::config 'fullchainfile')
 KEY_FILE=$(bashio::config 'keyfile')
+SERVER=$(bashio::config 'server')
 
 source <(echo ${DNS_ENV_OPTIONS});
 
@@ -30,6 +31,7 @@ function issue {
     acme.sh --issue ${DOMAIN_ARG} \
         --keylength ${KEY_LENGTH} \
         --dns ${DNS_PROTO} \
+        --server ${SERVER} \
         || { ret=$?; [ $ret -eq ${RENEW_SKIP} ] && return 0 || return $ret ;}
 }
 
