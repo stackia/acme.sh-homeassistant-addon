@@ -30,6 +30,6 @@ schema:
   - name: str
     value: str
   keylength: match(2048|4096|ec-256|ec-384|ec-521)
-  server: match(letsencrypt|zerossl)
+  server: match(letsencrypt|zerossl|google)
   fullchainfile: str
   keyfile: str
