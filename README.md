@@ -10,7 +10,7 @@ accountemail: mail@example.com
 domains:
   - home.example.com
   - '*.home.example.com'
-dns: dns_cf
+dns: dns_namecheap
 dnsEnvVariables:
   - name: NAMECHEAP_USERNAME
     value: xxxx
