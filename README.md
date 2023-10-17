@@ -12,11 +12,11 @@ domains:
   - '*.home.example.com'
 dns: dns_cf
 dnsEnvVariables:
-  - name: CF_Token
+  - name: NAMECHEAP_USERNAME
     value: xxxx
-  - name: CF_Account_ID
+  - name: NAMECHEAP_API_KEY
     value: xxxx
-  - name: CF_Zone_ID
+  - name: NAMECHEAP_SOURCEIP
     value: xxxx
 server: letsencrypt
 keylength: 2048
