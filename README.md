@@ -3,7 +3,7 @@
 This a home assistant integration of the acme.sh project. It allows to generate a TLS certificate using the ACME protocol.
 
 ## Configuration
-Tested with the *dns_cf* configuration but It should work, the dnsEnvVariables can be configured with any environment required for acme.sh to work.
+Tested with the *dns_namecheap* configuration but It should work, the dnsEnvVariables can be configured with any environment required for acme.sh to work.
 
 ```yaml
 accountemail: mail@example.com
